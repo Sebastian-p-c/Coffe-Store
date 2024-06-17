@@ -13,7 +13,120 @@
 
     <header class="header">
 
+        <div class="contenedor">
+            <div class="barra">
+                <a class="logo" href="index.html">
+                    <h1 class="logo_nombre no-margin centrar-texto">Blog<span class="logo_bold">DeCafé</span></h1>
+                </a>
+
+                <nav class="navegacion">
+                    <a href="#" class="navegacion_enlace">Nosotros</a>
+                    <a href="#" class="navegacion_enlace">Productos</a>
+                    <a href="#" class="navegacion_enlace">Contacto</a>
+                </nav>
+            </div>
+        </div>
+
+        <div class="header_texto">
+            <h2 class="no_margin">Blog de café con consejos y cursos</h2>
+            <p class="no_margin">Aprende de los expertos con los mejores recetas y consejos</p>
+        </div>
     </header>
 
+    <div class="contenedor contenido-principal">
+        <main class="blog">
+            <h3>Nuestros Blog</h3>
+
+            <article class="entrada">
+                <div class="entrada_imagen">
+                    <img src="{% static 'img/blog1.jpg'%}" alt="imagen blog">
+                </div>
+
+                <div class="entrada_contenido">
+                    <h4 class="no-margin">Tipos de granos de Café</h4>
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. 
+                        In sit vitae aspernatur nihil optio vel exercitationem. 
+                        Recusandae impedit aspernatur officiis distinctio ex dolorum eum, ab fugit voluptate 
+                        maxime! Amet, neque.</p>
+                        <a href="#" class="boton boton--primario">Leer Entrada</a>
+                </div>
+            </article>
+
+            <article class="entrada">
+                <div class="entrada_imagen">
+                    <img src="{% static 'img/blog2.jpg'%}" alt="imagen blog">
+                </div>
+
+                <div class="entrada_contenido">
+                    <h4 class="no-margin">3 Deliciosas Recetas de Café</h4>
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. 
+                        In sit vitae aspernatur nihil optio vel exercitationem. 
+                        Recusandae impedit aspernatur officiis distinctio ex dolorum eum, ab fugit voluptate 
+                        maxime! Amet, neque.</p>
+                        <a href="#" class="boton boton--primario">Leer Entrada</a>
+                </div>
+            </article>
+
+            <article class="entrada">
+                <div class="entrada_imagen">
+                    <img src="{% static 'img/blog3.jpg'%}" alt="imagen blog">
+                </div>
+
+                <div class="entrada_contenido">
+                    <h4 class="no-margin">Beneficios del Café</h4>
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. 
+                        In sit vitae aspernatur nihil optio vel exercitationem. 
+                        Recusandae impedit aspernatur officiis distinctio ex dolorum eum, ab fugit voluptate 
+                        maxime! Amet, neque.</p>
+                        <a href="#" class="boton boton--primario">Leer Entrada</a>
+                </div>
+            </article>
+
+        </main>
+
+        <aside class="sidebar">
+            <h3>Nuestros Productos</h3>
+
+            <ul class="producto no-padding">
+                <li class="widget-producto">
+                    <h4 class="no-margin">Café Golden</h4>
+                    <p class="widget-producto__label">Precio:
+                        <span class="widget-producto__info">$10.000</span>
+                    </p>
+                    <p class="widget-producto__label">Cantidad:
+                        <span class="widget-producto__info">10</span>
+                    </p>
+                    <a href="#" class="boton boton--secundario">Más Información</a>
+                </li>
+
+                <li class="widget-producto">
+                    <h4 class="no-margin">Café Premiun</h4>
+                    <p class="widget-producto__label">Precio:
+                        <span class="widget-producto__info">$16.000</span>
+                    </p>
+                    <p class="widget-producto__label">Cantidad:
+                        <span class="widget-producto__info">8</span>
+                    </p>
+                    <a href="#" class="boton boton--secundario">Más Información</a>
+                </li>
+            </ul>
+        </aside>
+    </div>
+
+    <footer class="footer">
+        <div class="contenedor">
+            <div class="barra">
+                <a class="logo" href="index.html">
+                    <h1 class="logo_nombre no-margin centrar-texto">Blog<span class="logo_bold">DeCafé</span></h1>
+                </a>
+
+                <nav class="navegacion">
+                    <a href="#" class="navegacion_enlace">Nosotros</a>
+                    <a href="#" class="navegacion_enlace">Productos</a>
+                    <a href="#" class="navegacion_enlace">Contacto</a>
+                </nav>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
