@@ -11,3 +11,7 @@ def nosotros(request):
 def login(request):
     context={}
     return render(request, 'menu/login.html', context)
+
+def registro(request):
+    context={}
+    return render(request, 'menu/registro.html', context)
