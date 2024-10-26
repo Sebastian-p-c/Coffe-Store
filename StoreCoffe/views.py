@@ -7,3 +7,7 @@ def index(request):
 def nosotros(request):
     context={}
     return render(request, 'menu/nosotros.html', context)
+
+def login(request):
+    context={}
+    return render(request, 'menu/login.html', context)
