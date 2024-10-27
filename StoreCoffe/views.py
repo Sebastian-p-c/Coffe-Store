@@ -24,3 +24,7 @@ def registro(request):
     else:
         form = RegistroUsuarioForm()
     return render(request, 'menu/registro.html', {'form': form})
+
+def detalleproducto(request):
+    context={}
+    return render(request, 'menu/detalle-producto.html', context)
