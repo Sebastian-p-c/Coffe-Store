@@ -15,3 +15,7 @@ def login(request):
 def registro(request):
     context={}
     return render(request, 'menu/registro.html', context)
+
+def detalleproducto(request):
+    context={}
+    return render(request, 'menu/detalle-producto.html', context)
