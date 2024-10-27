@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .forms import RegistroUsuarioForm
+from .models import usuario
 
 def index(request):
     context={}
@@ -13,5 +15,12 @@ def login(request):
     return render(request, 'menu/login.html', context)
 
 def registro(request):
-    context={}
-    return render(request, 'menu/registro.html', context)
+    if request.method == 'POST':
+        form = RegistroUsuarioForm(request.POST)
+        if form.is_valid():
+            # Guardar el usuario en la base de datos
+            form.save()
+            return redirect('login')  # Redirige al login una vez registrado
+    else:
+        form = RegistroUsuarioForm()
+    return render(request, 'menu/registro.html', {'form': form})

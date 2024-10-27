@@ -10,18 +10,25 @@
 </head>
 <body>
     <div class="wrapper">
-        <form action="">
-            <h1>Login</h1>
+        <form method="POST" action="{% url 'registro' %}">
+            {% csrf_token %}
+            <h1>Registro</h1>
+
             <div class="input-box">
-                <input type="text" placeholder="Username" required>
+                {{ form.username }}
+                <!-- <input type="text" placeholder="Username" required> -->
                 <i class='bx bxs-user'></i>
             </div>
+
             <div class="input-box">
-                <input type="email" placeholder="Email" required>
+                {{ form.correo }}
+                <!-- <input type="email" placeholder="Email" required> -->
                 <i class='bx bxs-envelope' ></i>
             </div>
+
             <div class="input-box">
-                <input type="password" placeholder="Password" required>
+                {{ form.clave }}
+                <!-- <input type="password" placeholder="Password" required> -->
                 <i class='bx bxs-lock'></i>
             </div>
 
