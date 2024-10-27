@@ -1,7 +1,8 @@
 {% load static %}
+{% load widget_tweaks %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head>  
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Form </title>
@@ -10,14 +11,15 @@
 </head>
 <body>
     <div class="wrapper">
-        <form action="">
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
             <h1>Login</h1>
             <div class="input-box">
-                <input type="text" placeholder="Username" required>
+                <input type="text" name="username" placeholder="Username" required>
                 <i class='bx bxs-user'></i>
             </div>
             <div class="input-box">
-                <input type="password" placeholder="Password" required>
+                <input type="password" name="clave" placeholder="Password" required>
                 <i class='bx bxs-lock'></i>
             </div>
 

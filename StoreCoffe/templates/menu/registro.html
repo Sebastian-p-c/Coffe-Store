@@ -1,10 +1,11 @@
 {% load static %}
+{% load widget_tweaks %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Form </title>
+    <title>Register Form</title>
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
@@ -15,32 +16,32 @@
             <h1>Registro</h1>
 
             <div class="input-box">
-                {{ form.username }}
-                <!-- <input type="text" placeholder="Username" required> -->
+                <input type="text" name="username" placeholder="Username" required>
                 <i class='bx bxs-user'></i>
+                {{ form.username.errors }}
             </div>
 
             <div class="input-box">
-                {{ form.correo }}
-                <!-- <input type="email" placeholder="Email" required> -->
-                <i class='bx bxs-envelope' ></i>
+                <input type="email" name="correo" placeholder="Email" required>
+                <i class='bx bxs-envelope'></i>
+                {{ form.correo.errors }}
             </div>
 
             <div class="input-box">
-                {{ form.clave }}
-                <!-- <input type="password" placeholder="Password" required> -->
+                <input type="password" name="clave" placeholder="Password" required>
                 <i class='bx bxs-lock'></i>
+                {{ form.clave.errors }}
             </div>
 
             <div class="remember-forgot">
-                <label><input type="checkbox">Remember me</label>
+                <label><input type="checkbox"> Remember me</label>
                 <a href="#">Forgot password?</a>
             </div>
 
-            <button type="submit" class="btn">Login</button>
+            <button type="submit" class="btn">Register</button>
 
             <div class="register-link">
-                <p>Si tienes cuenta <a href="{% url 'login'%}">Login</a></p>
+                <p>Si tienes cuenta <a href="{% url 'login' %}">Login</a></p>
             </div>
         </form>
     </div>
