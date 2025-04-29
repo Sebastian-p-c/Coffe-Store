@@ -8,7 +8,7 @@
 
 body {
 	font-family: 'Ubuntu';
-	max-width: 1200px;
+	max-width: 100%;
 	margin: 0 auto;
 }
 
@@ -21,13 +21,22 @@ header {
 	align-items: center;
 	padding: 30px;
 	justify-content: center;
+	background-color: #000000;
+}
+
+h1{
+	color: #eee;
 }
 
 .container-title {
 	padding: 30px;
-	background-color: #eee;
+	background-color: #ffffff;
 	margin-bottom: 50px;
 	color: #222;
+}
+
+.container-title p {
+	font-size: x-large;
 }
 
 main {
@@ -37,7 +46,7 @@ main {
 }
 
 .container-img {
-	background-color: #f7f7f9;
+	background-color: #ffffff;
 	flex: 1;
 }
 

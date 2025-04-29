@@ -2,7 +2,11 @@ from django.shortcuts import render, redirect
 from .forms import RegistroUsuarioForm, AutheticationForms
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import usuario
+from .models import usuario, Transaccion
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from rest_framework.decorators import action
+from .serializers import TransaccionSerializer
 
 
 def index(request):
@@ -44,3 +48,27 @@ def detalleproducto(request):
 def logout_view(request):
     logout(request)
     return redirect("login")
+
+class TransaccionViewSet(viewsets.ModelViewSet):
+    queryset = Transaccion.objects.all()
+    serializer_class = TransaccionSerializer
+    lookup_field = 'token'  # Usamos token como ID en la URL
+
+    def create(self, request):
+        serializer = TransaccionSerializer(data=request.data)
+        if serializer.is_valid():
+            transaccion = serializer.save()
+            return Response({'token': transaccion.token}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=['get'])
+    def estado(self, request, token=None):
+        transaccion = self.get_object()
+        return Response({'estado': transaccion.estado})
+
+    @action(detail=True, methods=['put'])
+    def confirmar(self, request, token=None):
+        transaccion = self.get_object()
+        transaccion.estado = 'aprobada'
+        transaccion.save()
+        return Response({'mensaje': 'Transacción confirmada'})   
