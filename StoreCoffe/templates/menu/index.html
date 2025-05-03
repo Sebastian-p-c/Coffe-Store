@@ -69,6 +69,7 @@
                         <div class="usuario-menu">
                             <a href="#" id="update-password">Cambiar contraseña</a>
                             <a href="#" id="delete-account">Eliminar cuenta</a>
+                            <a href="#" id="logout">Cerrar sesión</a>
                         </div>
                     </div>
                 </nav>
@@ -348,8 +349,16 @@
                     });
                 }
             });
+
+            document.getElementById('logout').addEventListener('click', (e) => {
+                e.stopPropagation();
+                localStorage.removeItem('access_token');
+                alert('Sesión cerrada correctamente.');
+                window.location.href = '{% url "index" %}';
+            });
         });
     </script>
+
 
 </body>
 
