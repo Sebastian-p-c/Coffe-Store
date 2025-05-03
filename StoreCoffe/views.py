@@ -1,32 +1,30 @@
-# views.py
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.decorators import action, api_view, permission_classes
-from .forms import RegistroUsuarioForm
+from rest_framework.decorators import api_view, permission_classes, action
+from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Usuario
 from .serializers import UsuarioSerializer
 from .forms import RegistroUsuarioForm
 
+# -------------------------
+# Vistas HTML
+# -------------------------
 def index(request):
-    context = {}
-    return render(request, 'menu/index.html', context)
+    return render(request, 'menu/index.html')
 
 def nosotros(request):
-    context = {}
-    return render(request, 'menu/nosotros.html', context)
+    return render(request, 'menu/nosotros.html')
 
 def login_view(request):
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["clave"]
-        
-        # Usar el sistema de autenticación de Django
         user = authenticate(request, username=username, password=password)
-        if user is not None:
+        if user:
             login(request, user)
             return redirect("index")
         else:
@@ -44,14 +42,17 @@ def registro(request):
     return render(request, 'menu/registro.html', {'form': form})
 
 def detalleproducto(request):
-    context = {}
-    return render(request, 'menu/detalle-producto.html', context)
+    return render(request, 'menu/detalle-producto.html')
 
 def logout_view(request):
     logout(request)
     return redirect("login")
 
-# Vista API REST para registrar usuario
+# -------------------------
+# API REST
+# -------------------------
+
+# Registrar usuario por API
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def registrar_usuario(request):
@@ -61,25 +62,43 @@ def registrar_usuario(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# ViewSet para la gestión completa de usuarios
+# Obtener datos del usuario autenticado
+class UsuarioView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        serializer = UsuarioSerializer(request.user)
+        return Response(serializer.data)
+
+# Cambiar contraseña por usuario autenticado
+class CambiarContrasenaView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        nueva_clave = request.data.get('nueva_clave')
+        if not nueva_clave:
+            return Response({'error': 'Debe proporcionar una nueva contraseña'}, status=400)
+        user = request.user
+        user.set_password(nueva_clave)
+        user.save()
+        return Response({'mensaje': 'Contraseña actualizada correctamente'})
+    
+# Eliminar cuenta del usuario autenticado
+class EliminarCuentaView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+        user = request.user
+        user.delete()
+        return Response({'mensaje': 'Cuenta eliminada correctamente'}, status=204)
+
+# ViewSet para admin/API
 class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
-    permission_classes = [IsAuthenticated]  # Solo usuarios autenticados pueden acceder
-    
-    # Opcional: Puedes personalizar los métodos para adaptarlos a tus necesidades
-    def create(self, request, *args, **kwargs):
-        return super().create(request, *args, **kwargs)
+    permission_classes = [IsAuthenticated]
 
-    def update(self, request, *args, **kwargs):
-        return super().update(request, *args, **kwargs)
-
-    def destroy(self, request, *args, **kwargs):
-        return super().destroy(request, *args, **kwargs)
-
-    # Método adicional: Obtener la información del usuario autenticado
     @action(detail=False, methods=['get'])
     def mi_usuario(self, request):
-        user = request.user
-        serializer = self.get_serializer(user)
+        serializer = self.get_serializer(request.user)
         return Response(serializer.data)
