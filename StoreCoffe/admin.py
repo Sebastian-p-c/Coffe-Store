@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import usuario, carro
+from .models import Usuario, carro
 # Register your models here.
-admin.site.register(usuario)
+admin.site.register(Usuario)
 admin.site.register(carro)

@@ -1,49 +1,71 @@
 {% load static %}
-{% load widget_tweaks %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Form</title>
+    <title>Registro</title>
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="wrapper">
-        <form method="POST" action="{% url 'registro' %}">
-            {% csrf_token %}
+        <form id="registroForm">
             <h1>Registro</h1>
 
             <div class="input-box">
-                <input type="text" name="username" placeholder="Username" required>
+                <input type="text" id="username" placeholder="Nombre de usuario" required>
                 <i class='bx bxs-user'></i>
-                {{ form.username.errors }}
             </div>
 
             <div class="input-box">
-                <input type="email" name="correo" placeholder="Email" required>
+                <input type="email" id="correo" placeholder="Correo electrónico" required>
                 <i class='bx bxs-envelope'></i>
-                {{ form.correo.errors }}
             </div>
 
             <div class="input-box">
-                <input type="password" name="clave" placeholder="Password" required>
+                <input type="password" id="clave" placeholder="Contraseña" required>
                 <i class='bx bxs-lock'></i>
-                {{ form.clave.errors }}
             </div>
 
-            <div class="remember-forgot">
-                <label><input type="checkbox"> Remember me</label>
-                <a href="#">Forgot password?</a>
-            </div>
-
-            <button type="submit" class="btn">Register</button>
+            <button type="submit" class="btn">Registrarse</button>
 
             <div class="register-link">
-                <p>Si tienes cuenta <a href="{% url 'login' %}">Login</a></p>
+                <p>¿Ya tienes cuenta? <a href="{% url 'login' %}">Iniciar sesión</a></p>
             </div>
         </form>
     </div>
+
+    <script>
+        document.getElementById('registroForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const data = {
+                username: document.getElementById('username').value,
+                correo: document.getElementById('correo').value,
+                clave: document.getElementById('clave').value
+            };
+
+            try {
+                const response = await fetch('/api/registro/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    alert('Usuario registrado correctamente.');
+                    window.location.href = "{% url 'login' %}";
+                } else {
+                    const errorData = await response.json();
+                    alert('Error: ' + JSON.stringify(errorData));
+                }
+            } catch (error) {
+                alert('Error de red: ' + error.message);
+            }
+        });
+    </script>
 </body>
 </html>

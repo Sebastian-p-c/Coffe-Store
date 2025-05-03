@@ -1,40 +1,63 @@
 {% load static %}
-{% load widget_tweaks %}
 <!DOCTYPE html>
 <html lang="en">
-<head>  
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Form </title>
+    <title>Login</title>
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="wrapper">
-        <form method="POST" action="{% url 'login' %}">
-            {% csrf_token %}
+        <form id="loginForm">
             <h1>Login</h1>
+
             <div class="input-box">
-                <input type="text" name="username" placeholder="Username" required>
+                <input type="text" id="username" placeholder="Username" required>
                 <i class='bx bxs-user'></i>
             </div>
+
             <div class="input-box">
-                <input type="password" name="clave" placeholder="Password" required>
+                <input type="password" id="clave" placeholder="Password" required>
                 <i class='bx bxs-lock'></i>
             </div>
 
-            <div class="remember-forgot">
-                <label><input type="checkbox">Remember me</label>
-                <a href="#">Forgot password?</a>
-            </div>
-
-            <button type="submit" class="btn">Login</button>
+            <button type="submit" class="btn">Iniciar sesión</button>
 
             <div class="register-link">
-                <p>No tienes una cuenta? <a href="{% url 'registro'%}">Register</a> <a href="{% url 'index'%}">Home</a></p>
+                <p>¿No tienes cuenta? <a href="{% url 'registro' %}">Regístrate</a></p>
             </div>
         </form>
     </div>
 
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const data = {
+                username: document.getElementById('username').value,
+                password: document.getElementById('clave').value
+            };
+
+            const response = await fetch('/api/token/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                const tokens = await response.json();
+                localStorage.setItem('access_token', tokens.access);
+                localStorage.setItem('refresh_token', tokens.refresh);
+                alert('Inicio de sesión exitoso');
+                window.location.href = "{% url 'index' %}";
+            } else {
+                alert('Nombre de usuario o contraseña incorrectos');
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 from django import forms
-from .models import usuario
+from .models import Usuario
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm
 
@@ -7,7 +7,7 @@ class RegistroUsuarioForm(forms.ModelForm):
     clave = forms.CharField(widget=forms.PasswordInput)
 
     class Meta:
-        model = usuario
+        model = Usuario
         fields = ['username', 'correo', 'clave']
         
 # class LoginForm(forms.Form):
@@ -19,7 +19,7 @@ class AutheticationForms(forms.ModelForm):
     clave = forms.CharField(label="clave", widget=forms.PasswordInput)
 
     class Meta:
-        model = usuario
+        model = Usuario
         fields = ('username', 'clave')
 
     def clean(self):
