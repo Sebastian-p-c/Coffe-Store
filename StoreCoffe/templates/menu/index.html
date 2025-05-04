@@ -68,8 +68,8 @@
                         <span id="nombre-usuario"></span>
                         <div class="usuario-menu">
                             <a href="#" id="update-password">Cambiar contraseña</a>
-                            <a href="#" id="delete-account">Eliminar cuenta</a>
                             <a href="#" id="logout">Cerrar sesión</a>
+                            <a href="#" id="delete-account">Eliminar cuenta</a>
                         </div>
                     </div>
                 </nav>
@@ -304,7 +304,7 @@
                 e.stopPropagation();
                 const nuevaClave = prompt('Introduce tu nueva contraseña:');
                 if (nuevaClave) {
-                    fetch('/api/usuarios/cambiar_contrasena/', {
+                    fetch('/api/usuarios/me/cambiar_contrasena/', {
                         method: 'POST',
                         headers: {
                             'Authorization': 'Bearer ' + token,
@@ -329,7 +329,7 @@
             document.getElementById('delete-account').addEventListener('click', (e) => {
                 e.stopPropagation();
                 if (confirm('¿Seguro que quieres eliminar tu cuenta?')) {
-                    fetch('/api/usuarios/eliminar_cuenta/', {
+                    fetch('/api/usuarios/me/eliminar_cuenta/', {
                         method: 'DELETE',
                         headers: {
                             'Authorization': 'Bearer ' + token

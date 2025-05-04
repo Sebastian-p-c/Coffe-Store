@@ -21,8 +21,8 @@ urlpatterns = [
     path('api/registro/', views.registrar_usuario, name='registro_api'),
     path('api/usuarios/me/', UsuarioView.as_view(), name='usuario-me'),
     path('api/', include(router.urls)),
-    path('api/usuarios/cambiar-password/', CambiarContrasenaView.as_view(), name='cambiar_password'),
+    path('api/usuarios/me/cambiar_contrasena/', CambiarContrasenaView.as_view(), name='cambiar_password'),
 
     # Eliminar cuenta por correo electrónico
-    path('api/usuarios/eliminar_cuenta/', EliminarCuentaView.as_view(), name='eliminar_cuenta'),
+    path('api/usuarios/me/eliminar_cuenta/', EliminarCuentaView.as_view(), name='eliminar_cuenta'),
 ]
