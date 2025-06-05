@@ -44,6 +44,33 @@ def registro(request):
 def detalleproducto(request):
     return render(request, 'menu/detalle-producto.html')
 
+def cafedivino(request):
+    return render(request, 'menu/cafedivino.html')
+
+def cafeelite(request):
+    return render(request, 'menu/cafeelite.html')
+
+def cafegolden(request):
+    return render(request, 'menu/cafegolden.html')
+
+def cafehacking(request):
+    return render(request, 'menu/cafehacking.html')
+
+def cafepower(request):
+    return render(request, 'menu/cafepower.html')
+
+def cafepremium(request):
+    return render(request, 'menu/cafepremium.html')
+
+def cafeultimate(request):
+    return render(request, 'menu/cafeultimate.html')
+
+def cafeultimateplatino(request):
+    return render(request, 'menu/cafeultimateplatino.html')
+
+def cafeultimatepremium(request):
+    return render(request, 'menu/cafeultimatepremium.html')
+
 def logout_view(request):
     logout(request)
     return redirect("login")
