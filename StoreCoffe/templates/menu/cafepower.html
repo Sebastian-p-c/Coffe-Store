@@ -1,0 +1,226 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Producto</title>
+		<link rel="stylesheet" href="{% static 'css/detalle-producto.css'%} " />
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+	</head>
+	<body>
+		<header>
+			<h1>Think&<span>Coffe</span>'house</h1>
+		</header>
+
+		<div>
+			<h1 class="container-title">Caffe Power</h1>
+		</div>
+
+		<main>
+			<div class="container-img">
+				<img
+					src="https://images.unsplash.com/photo-1522825309746-56b2fadbea4c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+					alt="imagen-producto"
+					width="425"
+				/>
+			</div>
+			<div class="container-info-product">
+				<div class="container-price">
+					<span>Precio: $2.000</span>
+					<i class="fa-solid fa-angle-right"></i>
+				</div>
+
+				<div class="container-details-product">
+					<div class="form-group">
+						<label for="colour">Color</label>
+						<select name="colour" id="colour">
+							<option disabled selected value="">
+								Escoge una opción
+							</option>
+							<option value="rojo">Rojo</option>
+							<option value="blanco">Blanco</option>
+							<option value="beige">Beige</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="size">Tamaño</label>
+						<select name="size" id="size">
+							<option disabled selected value="">
+								Escoge una opción
+							</option>
+							<option value="40">Pequeño</option>
+							<option value="42">Mediano</option>
+							<option value="43">Grande</option>
+						</select>
+					</div>
+					<button class="btn-clean">Limpiar</button>
+				</div>
+
+				<div class="container-add-cart">
+					<div class="container-quantity">
+						<input
+							type="number"
+							placeholder="1"
+							value="1"
+							min="1"
+							class="input-quantity"
+						/>
+					</div>
+					<button class="btn-add-to-cart">
+						<i class="fa-solid fa-plus"></i>
+						Añadir al carrito
+					</button>
+
+					<button class="btn-add-to-buy">
+						<i class="fa-solid fa-cart-shopping"></i>
+						Comprar 
+					</button>
+				</div>
+
+				<div class="container-description">
+					<div class="title-description">
+						<h4>Descripción</h4>
+						<i class="fa-solid fa-chevron-down"></i>
+					</div>
+					<div class="text-description">
+						<p>
+							Lorem ipsum dolor, sit amet consectetur adipisicing
+							elit. Laboriosam iure provident atque voluptatibus
+							reiciendis quae rerum, maxime placeat enim cupiditate
+							voluptatum, temporibus quis iusto. Enim eum qui delectus
+							deleniti similique? Lorem, ipsum dolor sit amet
+							consectetur adipisicing elit. Sint autem magni earum est
+							dolorem saepe perferendis repellat ipsam laudantium cum
+							assumenda quidem quam, vero similique? Iusto officiis
+							quod blanditiis iste?
+						</p>
+					</div>
+				</div>
+
+				<div class="container-additional-information">
+					<div class="title-additional-information">
+						<h4>Información adicional</h4>
+						<i class="fa-solid fa-chevron-down"></i>
+					</div>
+					<div class="text-additional-information hidden">
+						<p>-----------</p>
+					</div>
+				</div>
+
+				<div class="container-reviews">
+					<div class="title-reviews">
+						<h4>Reseñas</h4>
+						<i class="fa-solid fa-chevron-down"></i>
+					</div>
+					<div class="text-reviews hidden">
+						<p>-----------</p>
+					</div>
+				</div>
+
+				<div class="container-social">
+					<span>Compartir</span>
+					<div class="container-buttons-social">
+						<a href="#"><i class="fa-solid fa-envelope"></i></a>
+						<a href="#"><i class="fa-brands fa-facebook"></i></a>
+						<a href="#"><i class="fa-brands fa-twitter"></i></a>
+						<a href="#"><i class="fa-brands fa-instagram"></i></a>
+						<a href="#"><i class="fa-brands fa-pinterest"></i></a>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<section class="container-related-products">
+			<h2>Productos Relacionados</h2>
+			<div class="card-list-products">
+				<div class="card">
+					<div class="card-img">
+						<img
+							src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+							alt="producto-1"
+						/>
+					</div>
+					<div class="info-card">
+						<div class="text-product">
+							<h3>Nike - Roshe Run</h3>
+							<p class="category">Footwear, Sneakers</p>
+						</div>
+						<div class="price">$85.00</div>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-img">
+						<img
+							src="https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?q=80&w=1972&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+							alt="producto-2"
+						/>
+					</div>
+					<div class="info-card">
+						<div class="text-product">
+							<h3>Common Projects Achilles</h3>
+							<p class="category">Footwear, Sneakers</p>
+						</div>
+						<div class="price">$255.00</div>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-img">
+						<img
+							src="https://images.unsplash.com/photo-1527156231393-7023794f363c?q=80&w=2022&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+							alt="producto-3"
+						/>
+					</div>
+					<div class="info-card">
+						<div class="text-product">
+							<h3>Adidas - Boston Super OG</h3>
+							<p class="category">Footwear, Sneakers</p>
+						</div>
+						<div class="price">$105.00</div>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-img">
+						<img
+							src="https://images.unsplash.com/photo-1592663527359-cf6642f54cff?q=80&w=2038&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+							alt="producto-4"
+						/>
+					</div>
+					<div class="info-card">
+						<div class="text-product">
+							<h3>Common Projects Achilles</h3>
+							<p class="category">Footwear, Sneakers</p>
+						</div>
+						<div class="price">$250.00</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<footer class="footer">
+            <div class="contenedor">
+                <div class="barra">
+                    <a class="logo" href="{% url 'index'%}">
+                        <h1 class="logo_nombre no-margin centrar-texto">Think&<span class="logo_bold">Coffe</span>'house</h1>
+                    </a>
+    
+                    <nav class="navegacion">
+                        <a href="#" class="navegacion_enlace">Nosotros</a>
+                        <a href="#" class="navegacion_enlace">Productos</a>
+                        <a href="#" class="navegacion_enlace">Contacto</a>
+                    </nav>
+                </div>
+            </div>
+        </footer>
+
+		<script
+			src="https://kit.fontawesome.com/81581fb069.js"
+			crossorigin="anonymous"
+		></script>
+		<script src="index.js"></script>
+	</body>
+</html>
