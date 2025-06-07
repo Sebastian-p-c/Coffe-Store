@@ -26,7 +26,13 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-            return redirect("index")
+
+            # Redirigir al panel de administración si es un superusuario
+            if user.is_superuser:  # Verifica si el usuario es superusuario
+                return redirect('/admin/')
+            
+            return redirect("index")  # Redirigir a la página de inicio normal
+
         else:
             messages.error(request, "Nombre de usuario o contraseña incorrectos")
     return render(request, "menu/login.html")
