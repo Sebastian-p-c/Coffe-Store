@@ -75,6 +75,8 @@ div.entrada_imagen img {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
+    border-bottom-left-radius: 25px;  /* Redondea el borde inferior izquierdo */
+    border-bottom-right-radius: 25px; /* Redondea el borde inferior derecho */
 }
 .header_texto {
     text-align: center;
