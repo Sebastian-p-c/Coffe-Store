@@ -49,6 +49,18 @@
         .entrada_contenido p {
         text-align: justify;
         }
+
+        /* Animación para el artículo */
+        .article-animado {
+            opacity: 0;
+            transform: translateX(-50%);
+            transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+        }
+
+        .article-visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
     </style>
 </head>
 
@@ -262,6 +274,6 @@
     </footer>
     
     <script src="{% static 'js/user.js' %}"></script>
-
+    <script src="{% static 'js/animacion.js' %}"></script>
 </body>
 </html>

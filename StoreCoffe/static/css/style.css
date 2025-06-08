@@ -51,6 +51,12 @@ h4 {
 img {
     max-width: 100%;
 }
+
+div.entrada_imagen img {
+    width: 75%; /* O el valor que desees */
+    height: auto; /* Mantener la proporción */
+    max-width: 100%;
+}
 /** Utilidades **/
 .no-margin {
     margin: 0;

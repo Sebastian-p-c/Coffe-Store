@@ -63,9 +63,9 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav ms-auto">
-            <a class="nav-link" href="#">Nosotros</a>
+            <a class="nav-link" href="{% url 'nosotros' %}">Nosotros</a>
             <a class="nav-link" href="#">Productos</a>
-            <a class="nav-link active" href="#">Contacto</a>
+            <a class="nav-link active" href="{% url 'contacto' %}">Contacto</a>
             <a href="{% url 'login' %}" id="login-link" class="nav-link">Iniciar Sesión</a>
             <div id="usuario-info" class="usuario-info" style="display: none; position: relative;">
                 <span id="nombre-usuario"></span>
