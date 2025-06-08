@@ -107,7 +107,7 @@ def iniciar_pago(request):
     buy_order = "ORD123456"  # <= < 26 caracteres
     session_id = "session123"
     amount = 3000  # por ejemplo
-    return_url = 'http://127.0.0.1:8000/webpay/respuesta/'
+    return_url = 'http://127.0.0.1:8000'
 
     response = transaction.create(
         buy_order=buy_order,
