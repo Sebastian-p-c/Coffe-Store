@@ -34,4 +34,7 @@ urlpatterns = [
 
     # Eliminar cuenta por correo electrónico
     path('api/usuarios/me/eliminar_cuenta/', EliminarCuentaView.as_view(), name='eliminar_cuenta'),
+
+    # Mapa
+    path('contacto/', views.contacto_view, name='contacto'),
 ]
