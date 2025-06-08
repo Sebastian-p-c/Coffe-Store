@@ -37,4 +37,8 @@ urlpatterns = [
 
     # Mapa
     path('contacto/', views.contacto_view, name='contacto'),
+
+    # Transbank
+    path('webpay/iniciar/', views.iniciar_pago, name='iniciar_pago'),
+    path('webpay/respuesta/', views.respuesta_pago, name='respuesta_pago'),
 ]
