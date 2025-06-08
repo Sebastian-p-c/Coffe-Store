@@ -9,6 +9,16 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Usuario
 from .serializers import UsuarioSerializer
 from .forms import RegistroUsuarioForm
+from transbank.webpay.webpay_plus.transaction import Transaction
+from .transbank_config import *
+import uuid
+from django.urls import reverse
+from transbank.common.options import Options
+from django.conf import settings
+from transbank.common.options import WebpayOptions
+from transbank.common.integration_type import IntegrationType
+
+
 
 # -------------------------
 # Vistas HTML
@@ -83,6 +93,38 @@ def logout_view(request):
 
 def contacto_view(request):
     return render(request, 'menu/contacto.html')
+
+
+def iniciar_pago(request):
+    options = WebpayOptions(
+        commerce_code=settings.TRANSBANK["commerce_code"],
+        api_key=settings.TRANSBANK["api_key"],
+        integration_type=IntegrationType.TEST  
+    )
+
+    transaction = Transaction(options)
+
+    buy_order = "ORD123456"  # <= < 26 caracteres
+    session_id = "session123"
+    amount = 3000  # por ejemplo
+    return_url = 'http://127.0.0.1:8000/webpay/respuesta/'
+
+    response = transaction.create(
+        buy_order=buy_order,
+        session_id=session_id,
+        amount=amount,
+        return_url=return_url
+    )
+
+    return redirect(f"{response['url']}?token_ws={response['token']}")
+
+def respuesta_pago(request):
+    token = request.GET.get('token_ws')
+    if not token:
+        return render(request, 'menu/respuesta.html', {'error': 'Token no encontrado'})
+
+    response = Transaction.commit(token)
+    return render(request, 'menu/respuesta.html', {'response': response})
 # -------------------------
 # API REST
 # -------------------------

@@ -26,6 +26,13 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
+# SECURITY TRANSBANK
+TRANSBANK = {
+    'commerce_code': config('TRANSBANK_COMMERCE_CODE'),
+    'api_key': config('TRANSBANK_API_KEY'),
+    'environment': config('TRANSBANK_ENVIRONMENT', default='sandbox')
+}
+
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
@@ -42,7 +49,6 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'rest_framework',
     'rest_framework_simplejwt',
-    'payments',
 ]
 
 MIDDLEWARE = [

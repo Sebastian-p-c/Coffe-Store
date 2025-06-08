@@ -1,0 +1,17 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Respuesta Webpay</title>
+</head>
+<body>
+    <h1>Resultado del Pago</h1>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% else %}
+        <p>Estado: {{ response.status }}</p>
+        <p>Código de respuesta: {{ response.response_code }}</p>
+        <p>Monto: {{ response.amount }}</p>
+    {% endif %}
+</body>
+</html>
