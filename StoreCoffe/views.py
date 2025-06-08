@@ -17,6 +17,7 @@ from transbank.common.options import Options
 from django.conf import settings
 from transbank.common.options import WebpayOptions
 from transbank.common.integration_type import IntegrationType
+from django.http import HttpResponseBadRequest
 
 
 
@@ -98,7 +99,45 @@ def nosotros_view(request):
     return render(request, 'menu/nosotros.html')
 
 
+# def iniciar_pago(request):
+#     options = WebpayOptions(
+#         commerce_code=settings.TRANSBANK["commerce_code"],
+#         api_key=settings.TRANSBANK["api_key"],
+#         integration_type=IntegrationType.TEST  
+#     )
+
+#     transaction = Transaction(options)
+
+#     buy_order = "ORD123456"  # <= < 26 caracteres
+#     session_id = "session123"
+#     amount = 3000  # por ejemplo
+#     return_url = 'http://127.0.0.1:8000'
+
+#     response = transaction.create(
+#         buy_order=buy_order,
+#         session_id=session_id,
+#         amount=amount,
+#         return_url=return_url
+#     )
+
+#     return redirect(f"{response['url']}?token_ws={response['token']}")
+
+PRODUCTOS = {
+    "prod1": {"nombre": "Producto 1", "precio": 3000},
+    "prod2": {"nombre": "Producto 2", "precio": 4500},
+    "prod3": {"nombre": "Producto 3", "precio": 2000},
+    "prod4": {"nombre": "Producto 4", "precio": 4000},
+    "prod5": {"nombre": "Producto 5", "precio": 3500},
+}
+
 def iniciar_pago(request):
+    product_id = request.POST.get("producto")
+    if product_id not in PRODUCTOS:
+        return HttpResponseBadRequest("Producto inválido")
+
+    producto = PRODUCTOS[product_id]
+    precio = producto["precio"]
+
     options = WebpayOptions(
         commerce_code=settings.TRANSBANK["commerce_code"],
         api_key=settings.TRANSBANK["api_key"],
@@ -107,20 +146,19 @@ def iniciar_pago(request):
 
     transaction = Transaction(options)
 
-    buy_order = "ORD123456"  # <= < 26 caracteres
+    buy_order = f"ORD-{product_id[:20]}"
     session_id = "session123"
-    amount = 3000  # por ejemplo
-    return_url = 'http://127.0.0.1:8000'
+    return_url = 'http://127.0.0.1:8000/webpay/respuesta/'
 
     response = transaction.create(
         buy_order=buy_order,
         session_id=session_id,
-        amount=amount,
+        amount=precio,
         return_url=return_url
     )
 
     return redirect(f"{response['url']}?token_ws={response['token']}")
-
+    
 def respuesta_pago(request):
     token = request.GET.get('token_ws')
     if not token:

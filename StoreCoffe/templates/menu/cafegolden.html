@@ -76,10 +76,14 @@
 						Añadir al carrito
 					</button>
 
-					<button class="btn-add-to-buy">
-						<i class="fa-solid fa-cart-shopping"></i>
-						Comprar 
-					</button>
+					<form action="{% url 'iniciar_pago' %}" method="post">
+						{% csrf_token %}
+						<input type="hidden" name="producto" value="prod1">  <!-- o el ID correcto -->
+						<button type="submit" class="btn-add-to-buy">
+							<i class="fa-solid fa-cart-shopping"></i>
+							Comprar 
+						</button>
+					</form>
 				</div>
 
 				<div class="container-description">
