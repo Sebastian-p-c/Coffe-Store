@@ -94,6 +94,9 @@ def logout_view(request):
 def contacto_view(request):
     return render(request, 'menu/contacto.html')
 
+def nosotros_view(request):
+    return render(request, 'menu/nosotros.html')
+
 
 def iniciar_pago(request):
     options = WebpayOptions(
