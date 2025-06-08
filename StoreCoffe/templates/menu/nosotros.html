@@ -45,6 +45,91 @@
         #nombre-usuario {
             color: white;
         }
+
+        /* Sección Nosotros*/
+                /* Estilos de la sección Nosotros */
+        .nosotros-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 50px 0;
+            margin: 0 15px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .nosotros-text {
+            width: 48%;
+            text-align: left;
+            opacity: 0;
+            animation: fadeInLeft 1s forwards;
+        }
+
+        .nosotros-text p {
+            margin-bottom: 1rem;
+        }
+
+        .nosotros-image {
+            width: 48%;
+            opacity: 0;
+            animation: fadeInRight 1s forwards;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .nosotros-image img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        /* Animaciones */
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Media Query para Pantallas Pequeñas */
+        @media (max-width: 768px) {
+            .nosotros-section {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nosotros-text, .nosotros-image {
+                width: 100%;
+                text-align: center;
+            }
+
+            .nosotros-text {
+                margin-bottom: 30px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -75,33 +160,32 @@
   </nav>
 
   <!-- SECCIÓN "NOSOTROS" -->
-  <section class="bg-light py-5">
-    <div class="container">
-      <h2 class="text-center mb-4">Nosotros</h2>
-      <p class="text-center">“Think&Coffee’s House” es un acogedor y tradicional local de café, 
-        ubicado en la región metropolitana, que ha sido el refugio de numerosos clientes frecuentes 
-        desde su inauguración. Con el paso de los años, hemos logrado cultivar una comunidad fiel 
-        que disfruta de nuestro café artesanal y el ambiente cálido que ofrecemos. Sin embargo, 
-        hace unos meses, la apertura de una nueva cafetería, Starbucks, cerca de nuestra ubicación 
-        nos ha hecho enfrentar nuevos retos, perdiendo parte de nuestra clientela habitual y viendo 
-        una disminución en nuestros ingresos.
-        </p>
+  <section class="nosotros-section">
+    <div class="nosotros-text">
+      <h2>Nosotros</h2>
+      <p>“Think&Coffee’s House” es un acogedor y tradicional local de café, ubicado en la región metropolitana, 
+        que ha sido el refugio de numerosos clientes frecuentes desde su inauguración. Con el paso de los años, 
+        hemos logrado cultivar una comunidad fiel que disfruta de nuestro café artesanal y el ambiente cálido 
+        que ofrecemos. Sin embargo, hace unos meses, la apertura de una nueva cafetería, Starbucks, cerca de 
+        nuestra ubicación nos ha hecho enfrentar nuevos retos, perdiendo parte de nuestra clientela habitual 
+        y viendo una disminución en nuestros ingresos.</p>
 
-      <p class="text-center">A pesar de estos obstáculos, seguimos siendo el punto de encuentro de 
-        muchos de nuestros clientes leales, quienes nos siguen visitando. Ante esta situación, 
-        decidimos dar un paso hacia el futuro y acercarnos a nuevas personas mediante una solución 
-        innovadora: lanzar nuestra propia página web.
-        </p>
+      <p>A pesar de estos obstáculos, seguimos siendo el punto de encuentro de muchos de nuestros clientes 
+        leales, quienes nos siguen visitando. Ante esta situación, decidimos dar un paso hacia el futuro y 
+        acercarnos a nuevas personas mediante una solución innovadora: lanzar nuestra propia página web.</p>
 
-      <p class="text-center">Con la nueva página web de <strong>Think&Coffee’s House</strong>, 
-        buscamos abrir las puertas de nuestra cafetería al mundo. Ahora, no solo podrás conocer
-         más acerca de nuestra historia y productos, sino que también podrás disfrutar de la 
-         comodidad de conocer nuestro menú y realizar compras en línea. Esta plataforma nos 
-         permitirá llegar a más personas y ofrecerles un acceso más fácil a lo mejor de nuestra 
-         cafetería, sin importar la distancia.
-        </p>
+      <p>Con la nueva página web de <strong>Think&Coffee’s House</strong>, buscamos abrir las puertas 
+        de nuestra cafetería al mundo. Ahora, no solo podrás conocer más acerca de nuestra historia y productos, 
+        sino que también podrás disfrutar de la comodidad de conocer nuestro menú y realizar compras en línea. 
+        Esta plataforma nos permitirá llegar a más personas y ofrecerles un acceso más fácil a lo mejor de nuestra 
+        cafetería, sin importar la distancia.</p>
 
-      <p class="text-center">Te invitamos a ser parte de nuestra comunidad en línea, descubrir nuestros productos y disfrutar de la experiencia de <strong>Think&Coffee’s House</strong> desde la comodidad de tu hogar. ¡Estamos aquí para ti, más cerca que nunca!</p>
+      <p>Te invitamos a ser parte de nuestra comunidad en línea, descubrir nuestros productos y disfrutar 
+        de la experiencia de <strong>Think&Coffee’s House</strong> desde la comodidad de tu hogar. ¡Estamos 
+        aquí para ti, más cerca que nunca!</p>
+    </div>
+    <div class="nosotros-image">
+      <img src="{% static 'img/diferentes-tipos-de-cafes.jpg' %}" alt="Imagen de la cafetería">
     </div>
   </section>
 
