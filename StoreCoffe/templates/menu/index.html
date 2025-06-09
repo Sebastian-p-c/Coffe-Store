@@ -61,6 +61,17 @@
             opacity: 1;
             transform: translateX(0);
         }
+
+        @keyframes fadeInBlur {
+            0% {
+            opacity: 0;
+            filter: blur(10px); /* Desenfoque inicial */
+            }
+            100% {
+            opacity: 1;
+            filter: blur(0); /* Sin desenfoque al final */
+        }
+        }
     </style>
 </head>
 
@@ -275,5 +286,6 @@
     
     <script src="{% static 'js/user.js' %}"></script>
     <script src="{% static 'js/animacion.js' %}"></script>
+    <script src="{% static 'js/animacion-header-index.js' %}"></script>
 </body>
 </html>

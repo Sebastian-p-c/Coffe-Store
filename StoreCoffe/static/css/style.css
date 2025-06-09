@@ -82,6 +82,14 @@ div.entrada_imagen img {
     text-align: center;
     color: var(--blanco);
     margin-top: 5rem;
+    opacity: 0; 
+    filter: blur(10px);
+    transition: opacity 3s ease, filter 3s ease; 
+}
+
+.header_texto.visible {
+    opacity: 1;
+    filter: blur(0);
 }
 
 @media (min-width: 768px){
