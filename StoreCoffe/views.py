@@ -159,13 +159,32 @@ def iniciar_pago(request):
 
     return redirect(f"{response['url']}?token_ws={response['token']}")
     
+# def respuesta_pago(request):
+#     token = request.GET.get('token_ws')
+#     if not token:
+#         return render(request, 'menu/respuesta.html', {'error': 'Token no encontrado'})
+
+#     response = Transaction.commit(token)
+#     return render(request, 'menu/respuesta.html', {'response': response})
+
 def respuesta_pago(request):
     token = request.GET.get('token_ws')
     if not token:
         return render(request, 'menu/respuesta.html', {'error': 'Token no encontrado'})
 
-    response = Transaction.commit(token)
-    return render(request, 'menu/respuesta.html', {'response': response})
+    options = WebpayOptions(
+        commerce_code=settings.TRANSBANK["commerce_code"],
+        api_key=settings.TRANSBANK["api_key"],
+        integration_type=IntegrationType.TEST
+    )
+
+    transaction = Transaction(options)
+
+    try:
+        response = transaction.commit(token)
+        return render(request, 'menu/respuesta.html', {'response': response})
+    except TransbankError as e:
+        return render(request, 'menu/respuesta.html', {'error': str(e)})
 # -------------------------
 # API REST
 # -------------------------
