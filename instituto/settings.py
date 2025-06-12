@@ -141,10 +141,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+# Antes
+#STATIC_URL = '/static/'
+
+#STATICFILES_DIRS = [
+#    BASE_DIR / 'static',  # Para que Django sepa buscar en /static/
+#]
+
+#Despues
+
 STATIC_URL = '/static/'
 
+# Si la carpeta 'static' está dentro de la app StoreCoffe, esta es la configuración correcta
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',  # Para que Django sepa buscar en /static/
+    BASE_DIR / 'StoreCoffe' / 'static',  # Ajusta la ruta a tu carpeta 'static'
 ]
 
 # Default primary key field type
