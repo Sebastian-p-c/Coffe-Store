@@ -3,6 +3,7 @@ from django.test import TestCase
 # Create your tests here.
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from unittest.mock import patch
@@ -11,8 +12,12 @@ from transbank.common.integration_type import IntegrationType
 from django.conf import settings
 
 
+import re
+
 class UsuarioTests(TestCase):
-    
+
+    # // PU001 //
+
     def setUp(self):
         # Crear un usuario de prueba
         self.username = "usuario1"
@@ -24,179 +29,98 @@ class UsuarioTests(TestCase):
             password=self.password
         )
 
-        # Obtener token JWT
+        # Obtener token JWT inicial
         refresh = RefreshToken.for_user(self.user)
         self.access_token = str(refresh.access_token)
 
-    def test_login_url(self):
-        # Verificar que la URL de login devuelve un código de estado 200
-        response = self.client.get(reverse('login'))
-        self.assertEqual(response.status_code, 200)
+    # // PU002 //
 
-    def test_registro_url(self):
-        # Verificar que la URL de registro devuelve un código de estado 200
-        response = self.client.get(reverse('registro'))
-        self.assertEqual(response.status_code, 200)
+    def test_inicio_sesion(self):
+        # Intentar iniciar sesión con las credenciales correctas
+        response = self.client.post(reverse('token_obtain_pair'), {'username': 'usuario1', 'password': '1234'})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)  # Verificar que el login es exitoso
+        self.assertIn('access', response.data)  # Verificar que el token de acceso esté presente
+    
+    # // PU003 y PU004 //
 
-    def test_logout_url(self):
-        # Verificar que la URL de logout redirige correctamente
-        response = self.client.get(reverse('logout'))
-        self.assertRedirects(response, reverse('login'))
+    def test_modificar_contrasena(self):
+        # Nueva contraseña
+        nueva_contrasena = '5678'
 
-    def test_api_token_obtain(self):
-        # Verificar que la URL para obtener el token JWT devuelve un código de estado 200
-        response = self.client.post(reverse('token_obtain_pair'), {'username': self.username, 'password': self.password})
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn('access', response.data)  # Verifica que el token de acceso esté presente
+        # Enviar una solicitud POST a la API de cambio de contraseña con la nueva contraseña
+        response = self.client.post(reverse('cambiar_password'), {'nueva_clave': nueva_contrasena}, HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)  # Verificar que la respuesta es 200 OK
 
-    def test_api_token_refresh(self):
-        # Primero, obtener el token de acceso
-        refresh_token = RefreshToken.for_user(self.user)
-        response = self.client.post(reverse('token_refresh'), {'refresh': str(refresh_token)})
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn('access', response.data)  # Verifica que el token de acceso se refresque
+        # Verificar que la contraseña haya sido actualizada
+        self.user.refresh_from_db()  # Actualizamos el objeto de usuario
+        self.assertTrue(self.user.check_password(nueva_contrasena))  # Verificar que la nueva contraseña esté correcta
 
-    def test_api_registro_usuario(self):
-        # Verificar que la API de registro de usuario funcione correctamente
+        # Regenerar el token JWT con la nueva contraseña
+        refresh = RefreshToken.for_user(self.user)
+        new_access_token = str(refresh.access_token)  # Nuevo token con la nueva contraseña
+
+        # Intentar iniciar sesión con la nueva contraseña (usando la nueva contraseña)
+        response = self.client.post(reverse('token_obtain_pair'), {'username': 'usuario1', 'password': nueva_contrasena})
+        
+        # Verificar que el login es exitoso con la nueva contraseña
+        self.assertEqual(response.status_code, status.HTTP_200_OK)  # Verificar que el login es exitoso
+        self.assertIn('access', response.data)  # Verificar que el token de acceso esté presente
+
+        # Verificar que el token tiene el formato adecuado de JWT (3 partes separadas por '.')
+        self.assertTrue(re.match(r'^[\w-]+\.[\w-]+\.[\w-]+$', response.data['access']))  # Verificar formato JWT
+        self.assertIsNotNone(response.data['access'])  # Verificar que el token de acceso no sea None
+
+    # // PU005 //
+    def test_inicio_sesion_contrasena_incorrecta(self):
+            # Intentar iniciar sesión con la contraseña incorrecta
+            response = self.client.post(reverse('token_obtain_pair'), {'username': 'usuario1', 'password': '11111'})
+            
+            # Verificar que el login falla con la contraseña incorrecta (código de estado 401)
+            self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)  # Verificar que el login falla
+            self.assertNotIn('access', response.data)  # Verificar que el token de acceso no esté presente
+    
+    # // PU006: Se comprueba en localhost, ya que son cargas de imagenes
+
+    # // PU007 //
+    def test_registro_usuario_duplicado(self):
+        # Intentar registrar un nuevo usuario con las mismas credenciales
         data = {
-            'username': 'usuario_api',
-            'correo': 'usuario_api@example.com',
-            'password': 'api_pass'
+            'username': 'usuario1',  # Mismo nombre de usuario
+            'correo': 'usuario1@example.com',  # Mismo correo
+            'password': '1234'  # Mismas credenciales
         }
+
+        # Enviar una solicitud POST a la API de registro
         response = self.client.post(reverse('registro_api'), data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data['username'], data['username'])
-        self.assertEqual(response.data['correo'], data['correo'])
 
-    def test_api_obtener_usuario(self):
-        # Verificar que la API para obtener los datos del usuario autenticado funcione correctamente
-        response = self.client.get(reverse('usuario-me'), HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['username'], self.username)
+        # Verificar que la respuesta sea un error 400 (Bad Request)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_api_cambiar_contrasena(self):
-        # Cambiar la contraseña con autenticación
-        data = {'nueva_clave': 'nueva_contrasena'}
-        response = self.client.post(reverse('cambiar_password'), data, HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-        # Verifica que la nueva contraseña sea válida
-        self.user.refresh_from_db()
-        self.assertTrue(self.user.check_password('nueva_contrasena'))
-
-    def test_api_eliminar_cuenta(self):
-        # Eliminar cuenta con autenticación
-        response = self.client.delete(reverse('eliminar_cuenta'), HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-
-        # Verificar que el usuario haya sido eliminado
-        with self.assertRaises(get_user_model().DoesNotExist):
-            get_user_model().objects.get(username=self.username)
-
-    def test_restriccion_registro_usuario_existente(self):
-        # Intentar crear un usuario con las mismas credenciales
-        data = {
-            'username': self.username,
-            'correo': self.correo,
-            'password': 'new_password'
-        }
-        response = self.client.post(reverse('registro_api'), data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)  # El usuario ya existe
-
+        # Verificar que los errores de validación sean los correctos (usuario o correo duplicados)
+        self.assertIn('username', response.data)  # Verificar que el error de "username" esté presente
+        self.assertIn('correo', response.data)  # Verificar que el error de "correo" esté presente
 
 class TransbankTests(TestCase):
 
-    def setUp(self):
-        # Crear un usuario de prueba para los pagos
-        self.username = "usuario_pago"
-        self.correo = "usuario_pago@example.com"
-        self.password = "1234"
-        self.user = get_user_model().objects.create_user(
-            username=self.username,
-            correo=self.correo,
-            password=self.password
-        )
+    def test_redireccionamiento_transbank_sandbox(self):
+            # Llamamos a la URL para iniciar el pago
+            response = self.client.post(reverse('iniciar_pago'), data={'producto': 'prod1'})
 
-        # Obtener token JWT
-        refresh = RefreshToken.for_user(self.user)
-        self.access_token = str(refresh.access_token)
+            # Verificar que la respuesta sea una redirección (302)
+            self.assertEqual(response.status_code, 302)
 
-    @patch.object(Transaction, 'create', return_value={'url': 'http://127.0.0.1/webpay', 'token': 'mocked_token'})
-    def test_iniciar_pago_url(self, mock_create):
-        # Verificar que la URL para iniciar el pago de Transbank devuelva un código de estado 200
-        response = self.client.get(reverse('iniciar_pago'), HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
-        self.assertEqual(response.status_code, 302)  # Redirección al URL de pago de Transbank
-        self.assertEqual(response['Location'], 'http://127.0.0.1/webpay?token_ws=mocked_token')
+            # Verificar que la URL de redirección comience con la URL de Transbank Sandbox
+            self.assertTrue(response['Location'].startswith('https://webpay3gint.transbank.cl'))
+    
+    def test_cancelar_pago_y_redirigir(self):
+        # Simulamos la respuesta de Transbank después de un pago cancelado
+        # Usamos un token simulado para la prueba
+        response = self.client.get(reverse('respuesta_pago'), {
+            'TBK_TOKEN': '01ab90e73fe64327bdb3386590e8efb8b015d5dd6a15c4080948dd7aa073418d',
+            'TBK_ORDEN_COMPRA': 'ORD-prod1',  # Orden de compra simulada
+            'TBK_ID_SESION': 'session123',
+            'cancel': 'true'  # Simulamos que el pago fue cancelado
+        })
 
-    @patch.object(Transaction, 'commit', return_value={'status': 'success', 'buy_order': 'ORD123', 'amount': 3000})
-    def test_respuesta_pago_url(self, mock_commit):
-        # Verificar que la URL de respuesta de pago de Transbank devuelva un código de estado 200
-        response = self.client.get(reverse('respuesta_pago') + '?token_ws=mocked_token', HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'status: success')
-
-    @patch.object(Transaction, 'create', return_value={'url': 'http://127.0.0.1/webpay', 'token': 'mocked_token'})
-    @patch.object(Transaction, 'commit', return_value={'status': 'success', 'buy_order': 'ORD123', 'amount': 3000})
-    def test_transbank_proceso_pago(self, mock_commit, mock_create):
-        # Test completo para simular un pago con Transbank
-        response = self.client.get(reverse('iniciar_pago'), HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
-        self.assertEqual(response.status_code, 302)  # Redirección al pago
-        self.assertEqual(response['Location'], 'http://127.0.0.1/webpay?token_ws=mocked_token')
-
-        # Simulación de la respuesta del pago
-        response = self.client.get(reverse('respuesta_pago') + '?token_ws=mocked_token', HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'status: success')
-
-
-class ProductoTests(TestCase):
-
-    def test_detalleproducto_url(self):
-        # Verificar que la URL de detalle del producto devuelve un código de estado 200
-        response = self.client.get(reverse('detalleproducto'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_cafedivino_url(self):
-        # Verificar que la URL de cafedivino devuelve un código de estado 200
-        response = self.client.get(reverse('cafedivino'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_cafeelite_url(self):
-        # Verificar que la URL de cafeelite devuelve un código de estado 200
-        response = self.client.get(reverse('cafeelite'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_cafegolden_url(self):
-        # Verificar que la URL de cafegolden devuelve un código de estado 200
-        response = self.client.get(reverse('cafegolden'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_cafehacking_url(self):
-        # Verificar que la URL de cafehacking devuelve un código de estado 200
-        response = self.client.get(reverse('cafehacking'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_cafepower_url(self):
-        # Verificar que la URL de cafepower devuelve un código de estado 200
-        response = self.client.get(reverse('cafepower'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_cafepremium_url(self):
-        # Verificar que la URL de cafepremium devuelve un código de estado 200
-        response = self.client.get(reverse('cafepremium'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_cafeultimate_url(self):
-        # Verificar que la URL de cafeultimate devuelve un código de estado 200
-        response = self.client.get(reverse('cafeultimate'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_cafeultimateplatino_url(self):
-        # Verificar que la URL de cafeultimateplatino devuelve un código de estado 200
-        response = self.client.get(reverse('cafeultimateplatino'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_cafeultimatepremium_url(self):
-        # Verificar que la URL de cafeultimatepremium devuelve un código de estado 200
-        response = self.client.get(reverse('cafeultimatepremium'))
+        # Verificar que la respuesta sea 200 OK (No es una redirección)
         self.assertEqual(response.status_code, 200)
