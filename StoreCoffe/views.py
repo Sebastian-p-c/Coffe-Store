@@ -30,6 +30,9 @@ def index(request):
 def nosotros(request):
     return render(request, 'menu/nosotros.html')
 
+def productos(request):
+    return render(request, 'menu/productos.html')
+
 def login_view(request):
     if request.method == "POST":
         username = request.POST["username"]

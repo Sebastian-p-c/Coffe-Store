@@ -32,7 +32,7 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/usuarios/me/cambiar_contrasena/', CambiarContrasenaView.as_view(), name='cambiar_password'),
     path('nosotros/', views.nosotros, name='nosotros'),
-
+    path('productos', views.productos, name='productos'),
     # Eliminar cuenta por correo electrónico
     path('api/usuarios/me/eliminar_cuenta/', EliminarCuentaView.as_view(), name='eliminar_cuenta'),
 
